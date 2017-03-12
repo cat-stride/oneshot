@@ -4,23 +4,55 @@
 
 {% block head %} 
 	{{ super() }}
-	<style type="text/css">
-		body{text-align: center;}
-	</style>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    h1 {
+      width: 950px;
+      margin: 40px auto;
+    }
+    .bullet {
+      display: flex;
+      width: 950px;
+      margin: 0 auto;
+      font-size: 20px;
+      line-height: 30px;
+      height: 30px;
+      margin-bottom: 12px;
+    }
+    .bullet-sym {
+      width: 30px;
+    }
+    .bullet-input {
+      flex: 1;
+      height: 30px;
+      font-size: 20px;
+      outline: 0;
+      border: 0;
+    }
+    .bullet-input.editing {
+      border-bottom: 2px solid #999;
+    }
+  </style>
+
+
+  <script src="https://unpkg.com/vue@2.2.1/dist/vue.js"></script>
 	{{ moment.include_jquery() }}
 	{{ moment.include_moment() }}
 {% endblock %}
 
 {% block page_content %}
-	<div class="page-header">
-		<!-- <h1>ONE SHOT</h1> -->
-		<form action="/index" method="POST" >
-			<label>你想说啥？</label>
-			<p></p>
-			<input type="text" name="anything">
-			<input type="submit" name="Commit" value="Commit">
-		</form>
+
+	<div id="app" class="page-header">
+		{% block scripts %}
+			<script src="{{url_for('static', filename='js/bullet.js')}}"></script>
+			<script src="{{url_for('static', filename='js/bullet-input.js')}}"></script>
+			<script src="{{url_for('static', filename='js/app.js')}}"></script>
+			{{super()}}
+		{% endblock %}
 	</div>
+
 
 	<ul class="posts">
 		{% for post in posts %}
