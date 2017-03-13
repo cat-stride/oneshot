@@ -2,7 +2,7 @@
 from flask import render_template,request,redirect,url_for,flash
 from app.main import main
 from app import crud
-from json
+
 
 # index page
 @main.route('/',methods=['GET','POST'])

@@ -3,6 +3,7 @@
 
 from app import create_app, db
 from app.models import ToDoList
+
 from flask_script import Manager, Shell
 from flask_migrate import Migrate, MigrateCommand
 
