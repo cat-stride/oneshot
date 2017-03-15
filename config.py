@@ -16,7 +16,7 @@ class DevelopmentConfig(Config):
 	DEBUG = True
 	# SQLALCHEMY_DATABASE_URI = 'mysql://root:123456789@localhost/' + os.path.join(basedir, 'develop')
 	# SQLALCHEMY_DATABASE_URI = 'mysql://test:test@localhost/oneshot'
-	SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:postgres@localhost/oneshot'
+	SQLALCHEMY_DATABASE_URI = 'postgresql://postgres:123456789@localhost/oneshot'
 
 class ProductionConfig(Config):
 	"""生产环境"""
