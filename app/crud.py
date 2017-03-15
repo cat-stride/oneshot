@@ -12,10 +12,19 @@ def create_bullet(data):
 
 def read_bullet(bid=None):
 	if bid == None:
-		bullet = Bullets.query.order_by(Bullets.timestamp.desc()).all()
+		bullets = Bullets.query.order_by(Bullets.timestamp.desc()).all()
 	else:
-		bullet = Bullets.query.filter_by(bid=bid).all()
-	return bullet
+		bullets = Bullets.query.filter_by(bid=bid).all()
+	ble = {}
+	rep = []
+	for bullet in bullets:
+		ble['bid'] = bullet.bid
+		ble['sym_name'] = bullet.sym_name
+		ble['content'] = bullet.content
+		ble['timestamp'] = bullet.timestamp
+		ble['uid'] = bullet.uid
+		rep.append(ble)
+	return rep
 
 def update_bullet(bid, data):
 	old_bullet = Bullets.query.get(bid)
