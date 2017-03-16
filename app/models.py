@@ -1,6 +1,6 @@
 # coding:utf-8
 from . import db
-from datetime import datetime
+import time
 
 class Bullets(db.Model):
 	"""bullets table"""
@@ -8,7 +8,7 @@ class Bullets(db.Model):
 	bid = db.Column(db.Integer, primary_key=True)
 	sym_name = db.Column(db.Text, nullable=False)
 	content = db.Column(db.Text, nullable=False)
-	timestamp = db.Column(db.DateTime, nullable=False, index=True, default=datetime.utcnow)
+	timestamp = db.Column(db.Integer, nullable=False, index=True, default=int(time.time()))
 	uid = db.Column(db.Integer, db.ForeignKey('users.uid'))
 
 

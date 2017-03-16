@@ -3,6 +3,7 @@ from flask import render_template,request,redirect,url_for,flash,jsonify
 from app.main import main,errors
 from app import crud
 import json
+import time
 
 # index page
 @main.route('/',methods=['GET'])
@@ -10,35 +11,26 @@ import json
 def index():
 	posts = crud.read_bullet()
 	return render_template('index.html', posts=posts)
-		
 
 # request and response
 @main.route('/api/bullets',methods=['GET'])
 def get_bullets():
 	posts = crud.read_bullet()
-	if len(posts) == 0:
-		return 'bid not found', 404	
 	return jsonify(posts)
 
 @main.route('/api/bullets/<int:bid>',methods=['GET'])
 def get_a_bullet(bid):
 	posts = crud.read_bullet(bid)
-	if len(posts) == 0:
-		return 'bid not found', 404
 	return jsonify(posts)
-
 
 @main.route('/api/bullets', methods=['POST'])
 def create_a_bullet():
-	req = request.get_data().decode('utf-8') # str
-	body = eval(req)
-	bid = crud.create_bullet(body)
-	rep = {
-		'bid': bid,
-		'sym_name': body['sym_name'],
-		'content': body['content'],
-		'date': body['date']
-	}
+	req = request.get_data(as_text=True)
+	print(req)
+	b = req.replace("'", "\"")
+	# d = json.JSONDecoder(b)
+	body = json.loads(b)
+	rep = crud.create_bullet(body)
 	return jsonify(rep)
 
 
@@ -46,19 +38,13 @@ def create_a_bullet():
 def update_a_bullet(bid):
 	req = request.get_data().decode('utf-8')
 	body = eval(req)
-	crud.update_bullet(bid,body)
-	rep = {
-		'bid': bid,
-		'sym_name': body['sym_name'],
-		'content': body['content'],
-		'date': body['date']
-	}
+	rep = crud.update_bullet(bid,body)
 	return jsonify(rep)
 
 @main.route('/api/bullets/<int:bid>', methods=['DELETE'])
 def delete_a_bullet(bid):
-	crud.delete_bullet(bid)
-	return 'h'
+	rep = crud.delete_bullet(bid)
+	return jsonify(rep)
 
 
 # #sign up
