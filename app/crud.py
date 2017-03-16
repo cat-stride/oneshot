@@ -23,7 +23,7 @@ def read_bullet(bid=None):
 		ble['content'] = bullet.content
 		ble['timestamp'] = bullet.timestamp
 		ble['uid'] = bullet.uid
-		rep.append(ble)
+		rep.append(ble.copy())
 	return rep
 
 def update_bullet(bid, data):

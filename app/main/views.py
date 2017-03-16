@@ -1,6 +1,6 @@
 # coding:utf-8
 from flask import render_template,request,redirect,url_for,flash,jsonify
-from app.main import main
+from app.main import main,errors
 from app import crud
 import json
 
@@ -16,11 +16,15 @@ def index():
 @main.route('/api/bullets',methods=['GET'])
 def get_bullets():
 	posts = crud.read_bullet()
+	if len(posts) == 0:
+		return 'bid not found', 404	
 	return jsonify(posts)
 
 @main.route('/api/bullets/<int:bid>',methods=['GET'])
 def get_a_bullet(bid):
 	posts = crud.read_bullet(bid)
+	if len(posts) == 0:
+		return 'bid not found', 404
 	return jsonify(posts)
 
 
