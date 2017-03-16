@@ -1,20 +1,41 @@
-from app.models import ToDoList, User
+from datetime import datetime
+from app.models import Bullets, Users
 from . import db
 
+ 
+def create_bullet(data):
+	new_bullet = Bullets(sym_name=data['sym_name'],content=data['content'],\
+		timestamp=datetime.strptime(data['date'],'%Y/%m/%d %H:%M:%S'))
+	db.session.add(new_bullet)
+	db.session.commit()
+	return new_bullet.bid
+
+def read_bullet(bid=None):
+	if bid == None:
+		bullets = Bullets.query.order_by(Bullets.timestamp.desc()).all()
+	else:
+		bullets = Bullets.query.filter_by(bid=bid).all()
+	ble = {}
+	rep = []
+	for bullet in bullets:
+		ble['bid'] = bullet.bid
+		ble['sym_name'] = bullet.sym_name
+		ble['content'] = bullet.content
+		ble['timestamp'] = bullet.timestamp
+		ble['uid'] = bullet.uid
+		rep.append(ble.copy())
+	return rep
+
+def update_bullet(bid, data):
+	old_bullet = Bullets.query.get(bid)
+	old_bullet.sym_name = data['sym_name']
+	old_bullet.content = data['content']
+	old_bullet.timestamp = datetime.strptime(data['date'],'%Y/%m/%d %H:%M:%S')
+	db.session.add(old_bullet)
+	db.session.commit()
 
 
-# def create_todolist(tablename, data):
-def create_todolist(data):
-	todolist = ToDoList(body=data['body'])
-	db.session.add(todolist)
-
-def read_todolist():
-	todolist = ToDoList.query.order_by(ToDoList.timestamp.desc()).all()
-	return todolist
-
-def update(tablename, data):
-	pass
-
-def delete(tablename, data):
-	pass
-
+def delete_bullet(bid):
+	old_bullet = Bullets.query.get(bid)
+	db.session.delete(old_bullet)
+	db.session.commit()
