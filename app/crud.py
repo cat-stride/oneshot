@@ -1,14 +1,21 @@
-from datetime import datetime
+import time
 from app.models import Bullets, Users
 from . import db
 
  
 def create_bullet(data):
 	new_bullet = Bullets(sym_name=data['sym_name'],content=data['content'],\
-		timestamp=datetime.strptime(data['date'],'%Y/%m/%d %H:%M:%S'))
+		timestamp=int(time.time()))
 	db.session.add(new_bullet)
 	db.session.commit()
-	return new_bullet.bid
+	rep = {
+		'bid': new_bullet.bid,
+		'sym_name': new_bullet.sym_name,
+		'content': new_bullet.content,
+		'timestamp': new_bullet.timestamp,
+		'uid': new_bullet.uid
+	}
+	return 	rep
 
 def read_bullet(bid=None):
 	if bid == None:
@@ -27,15 +34,30 @@ def read_bullet(bid=None):
 	return rep
 
 def update_bullet(bid, data):
-	old_bullet = Bullets.query.get(bid)
-	old_bullet.sym_name = data['sym_name']
-	old_bullet.content = data['content']
-	old_bullet.timestamp = datetime.strptime(data['date'],'%Y/%m/%d %H:%M:%S')
-	db.session.add(old_bullet)
+	original_bullet = Bullets.query.get(bid)
+	original_bullet.sym_name = data['sym_name']
+	original_bullet.content = data['content']
+	original_bullet.timestamp = int(time.time())
+	db.session.add(original_bullet)
 	db.session.commit()
-
+	rep = {
+		'bid': original_bullet.bid,
+		'sym_name': original_bullet.sym_name,
+		'content': original_bullet.content,
+		'timestamp': original_bullet.timestamp,
+		'uid': original_bullet.uid
+	}
+	return rep
 
 def delete_bullet(bid):
 	old_bullet = Bullets.query.get(bid)
 	db.session.delete(old_bullet)
 	db.session.commit()
+	rep = {
+		'bid': old_bullet.bid,
+		'sym_name': old_bullet.sym_name,
+		'content': old_bullet.content,
+		'timestamp': old_bullet.timestamp,
+		'uid': old_bullet.uid
+	}
+	return rep
