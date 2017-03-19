@@ -1,0 +1,62 @@
+* {
+  box-sizing: border-box;
+}
+h1 {
+  width: 950px;
+  margin: 40px auto;
+}
+h4 {
+  border-bottom: 1px solid #ccc;
+}
+.appcontainer {
+  width: 960px;
+  margin: 0 auto;
+  padding: 40px;
+  padding-bottom: 400px;
+}
+.bullet {
+  display: flex;
+  margin-left: 160px;
+  font-size: 14px;
+  line-height: 25px;
+  height: 25px;
+  margin-bottom: 12px;
+}
+.bullet-sym {
+  cursor: pointer;
+  width: 30px;
+}
+.bullet-input {
+  flex: 1;
+  height: 25px;
+  font-size: 14px;
+  outline: 0;
+  border: 0;
+}
+.bullet-input.editing {
+  border-bottom: 2px solid #999;
+}
+.prevbutton {
+  cursor: pointer;
+  font-size: 18px;
+  display: block;
+  width: 100%;
+  background: #fff;
+  padding: .4em 0;
+  border: 1px solid #999;
+}
+.prevbutton:hover {
+  border-color: #ccc;
+  outline: none;
+}
+.slide-fade-enter-active {
+  transition: all .4s ease;
+}
+.slide-fade-leave-active {
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-enter, .slide-fade-leave-active {
+  transform: translateY(20px);
+  height: 0;
+  opacity: 0;
+}
