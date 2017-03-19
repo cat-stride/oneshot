@@ -2,57 +2,22 @@
 
 {% block title %}Welcome to ONE SHOT{% endblock %}
 
-{% block head %} 
+{% block head %}
 	{{ super() }}
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-    h1 {
-      width: 950px;
-      margin: 40px auto;
-    }
-    .bullet {
-      display: flex;
-      width: 950px;
-      margin: 0 auto;
-      font-size: 20px;
-      line-height: 30px;
-      height: 30px;
-      margin-bottom: 12px;
-    }
-    .bullet-sym {
-      width: 30px;
-    }
-    .bullet-input {
-      flex: 1;
-      height: 30px;
-      font-size: 20px;
-      outline: 0;
-      border: 0;
-    }
-    .bullet-input.editing {
-      border-bottom: 2px solid #999;
-    }
-  </style>
+	<link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
 
-
-  <script src="https://unpkg.com/vue@2.2.1/dist/vue.js"></script>
+  <script src="{{url_for('static', filename='js/vue.min.js')}}"></script>
 	{{ moment.include_jquery() }}
 	{{ moment.include_moment() }}
 {% endblock %}
 
 {% block page_content %}
 
-	<div id="app" class="page-header">
-		{% block scripts %}
-			<script src="{{url_for('static', filename='js/bullet.js')}}"></script>
-			<script src="{{url_for('static', filename='js/bullet-input.js')}}"></script>
-			<script src="{{url_for('static', filename='js/app.js')}}"></script>
-			{{super()}}
-		{% endblock %}
-	</div>
+	<div id="app"></div>
 
+	<script src="{{url_for('static', filename='js/bullet.js')}}"></script>
+	<script src="{{url_for('static', filename='js/bullet-input.js')}}"></script>
+	<script src="{{url_for('static', filename='js/app.js')}}"></script>
 
 	<ul class="posts">
 		{% for post in posts %}

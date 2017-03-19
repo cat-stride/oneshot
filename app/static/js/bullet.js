@@ -1,6 +1,21 @@
 function buildRecords() {
   const BULLET_RECORDS = 'BULLET_RECORDS'
   const BULLET_INDEX = 'BULLET_INDEX'
+  const API = '/api/bullets'
+  const SYM_TO_STRING = {
+    '.': 'today',
+    '>': 'delay',
+    '<': 'future',
+    'x': 'done',
+    '-': 'note',
+    'o': 'event',
+  }
+  const STRING_TO_SYM = (() => {
+    return Object.keys(SYM_TO_STRING).reduce((prev, current) => {
+      prev[SYM_TO_STRING[current]] = current
+      return prev
+    }, {})
+  })()
 
   function parseJSON(raw) {
     try {
@@ -10,17 +25,25 @@ function buildRecords() {
     }
   }
 
-  function getLocalCount() {
-    return +localStorage.getItem(BULLET_INDEX)
+  function parseRecordSyms(records) {
+    return records.map(record => {
+      record.sym = STRING_TO_SYM[record.sym_name]
+      record.id = record.bid
+      return record
+    }).sort((a, b) => a.id > b.id)
   }
 
-  function incLocalCount() {
-    const count = getLocalCount() + 1
-    localStorage.setItem(BULLET_INDEX, count)
-    return count
+  function stringifyRecordSyms(records) {
+    return records.map(record => {
+      record.sym_name = SYM_TO_STRING[record.sym]
+      record.bid = record.id
+      return record
+    })
   }
 
-  function getLocalBullets() {
+  async function getBullets() {
+    const records = await fetch(API).then(r => r.json())
+    saveLocalBullets(parseRecordSyms(records))
     const raw = localStorage.getItem(BULLET_RECORDS)
     return parseJSON(raw) || []
   }
@@ -34,42 +57,40 @@ function buildRecords() {
     return (bullets || getLocalBullets()).find(bullet => bullet.id === id)
   }
 
-  function addBullet({ sym, content }) {
-    const bullets = getLocalBullets()
-    const id = incLocalCount()
-    bullets.push({ sym, content, id })
+  async function addBullet({ sym, content }) {
+    const record = await fetch(API, {
+      method: 'POST',
+      body: JSON.stringify({ sym_name: SYM_TO_STRING[sym], content: content }),
+    }).then(r => r.json())
+    const bullets = await getBullets()
     saveLocalBullets(bullets)
     return bullets
   }
 
-  function setBullet({ id, sym, content }) {
-    const bullets = getLocalBullets()
-    const bullet = getBullet(id, bullets)
-    Object.assign(bullet, { sym, content })
+  async function setBullet({ id, sym, content }) {
+    const record = await fetch(`${API}/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify({ sym_name: SYM_TO_STRING[sym], content: content }),
+    }).then(r => r.json())
+    const bullets = await getBullets()
     saveLocalBullets(bullets)
     return bullets
   }
 
-  function removeBullet({ id }) {
-    const bullets = getLocalBullets()
-    const index = bullets.indexOf(getBullet(id, bullets))
-    bullets.splice(index, 1)
+  async function removeBullet({ id }) {
+    const record = await fetch(`${API}/${id}`, {
+      method: 'DELETE',
+    }).then(r => r.json())
+    const bullets = await getBullets()
     saveLocalBullets(bullets)
     return bullets
   }
 
   return {
-    getLocalBullets,
+    getBullets,
     getBullet,
     addBullet,
     setBullet,
     removeBullet,
   }
-}
-
-// TESTING
-if (!localStorage.getItem('BULLET_RECORDS')) {
-  const raw = '[{"sym":">","content":"一个延期","id":2},{"sym":">","content":"又一个延期","id":3},{"sym":".","content":"这是今天的待办","id":4},{"sym":"x","content":"这是待办完成","id":5},{"sym":"o","content":"这是一个事件","id":6},{"sym":"-","content":"这是普通的笔记","id":7},{"sym":"x","content":"输入一条 bullet，回车或失去焦点时保存","id":8},{"sym":"x","content":"然后进入下一条 bullet 编辑","id":9},{"sym":"x","content":"正在编辑的状态要区分开","id":10},{"sym":"<","content":"删除今天先不做了","id":11},{"sym":"x","content":"第一个空格前的字符如果是符号，则放置为符号","id":12},{"sym":"x","content":"编辑状态按上下键可以快捷切换符号","id":13},{"sym":"<","content":"优化样式","id":14},{"sym":"-","content":"这样如何","id":15},{"sym":"o","content":"超出计划时长太多了，今天熬夜了","id":16}]'
-  localStorage.setItem('BULLET_RECORDS', raw)
-  localStorage.setItem('BULLET_INDEX', 16)
 }

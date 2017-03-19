@@ -10,7 +10,7 @@ import time
 @main.route('/index',methods=['GET'])
 def index():
 	posts = crud.read_bullet()
-	return render_template('index.html', posts=posts)
+	return render_template('index.html')
 
 # request and response
 @main.route('/api/bullets',methods=['GET'])
@@ -56,4 +56,3 @@ def delete_a_bullet(bid):
 # @main.route('/signin',methods=['GET','POST'])
 # def signin():
 # 	pass
-

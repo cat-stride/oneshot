@@ -14,22 +14,37 @@
       return {
         syms,
         editing: false,
+        hover: false,
       }
     },
     props: {
       bullet: Object,
+      readonly: Boolean,
     },
     methods: {
       changeSym(arrow, event) {
-        event.preventDefault()
+        if (event) event.preventDefault()
+        if (this.readonly) return
         const count = this.syms.length
         const index = (this.syms.indexOf(this.bullet.sym) + arrow + count) % count
         this.bullet.sym = this.syms[index]
       },
+      handleClickSym() {
+        changeSym(1)
+        this.submit()
+      },
       submit() {
+        if (this.readonly) return
         if (!this.bullet.content) return
         if (!this.bullet.sym || this.bullet.sym === '?') this.bullet.sym = '-'
         this.$emit('submit', this.bullet)
+        this.editing = false
+      },
+      focus() {
+        this.$refs.input.focus()
+      },
+      handleEnter() {
+        this.$refs.input.blur()
       },
       handleFocus(bool) {
         if (!bool) this.submit()
@@ -46,8 +61,22 @@
       },
       handleDelete() {
         if (this.bullet.content) return
-        this.bullet.sym = ''
-      }
+        if (this.bullet.sym === '?' && this.bullet.id) {
+          this.delete()
+          return
+        }
+        this.bullet.sym = '?'
+      },
+      handleMousehover(bool) {
+        if (this.readonly) {
+          this.hover = false
+          return
+        }
+        this.hover = bool
+      },
+      delete() {
+        this.$emit('delete', this.bullet)
+      },
     },
     mounted() {
       if (!this.bullet.content) {
@@ -56,16 +85,18 @@
     },
     template: `
       <div class="bullet">
-        <span class="bullet-sym" @keydown>{{ bullet.sym }}</span>
-        <input class="bullet-input" type="text" v-model="bullet.content"
+        <span class="bullet-sym" @click="handleClickSym()">{{ bullet.sym }}</span>
+        <input ref="input" class="bullet-input" type="text" v-model="bullet.content"
           :class="{ editing: editing }"
+          :readonly="readonly"
           @focus="handleFocus(true)"
           @blur="handleFocus(false)"
           @keyup="handleChange"
           @keydown.delete="handleDelete"
           @keydown.up="changeSym(-1, $event)"
           @keydown.down="changeSym(1, $event)"
-          @keydown.enter="submit">
+          @keydown.enter="handleEnter">
+        <button v-if="hover" class="bullet-del">&times;</button>
       </div>
     `
   })
