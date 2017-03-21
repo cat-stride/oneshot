@@ -1,5 +1,5 @@
 # coding:utf-8
-from flask import Flask
+from flask import Flask, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_moment import Moment
 from flask_bootstrap import Bootstrap

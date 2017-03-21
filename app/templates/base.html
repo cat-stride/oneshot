@@ -1,25 +1,35 @@
 {% extends "bootstrap/base.html" %}
 
-{% block title %}Oneshot{% endblock %}
+{% block title %}OneShot{% endblock %}
 
 {% block navbar %}
+
 <div class="navbar navbar-inverse" role="navigation">
 	<div class="container">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapase">
-				<span class="sr-only">Toggle navigation</span>
+				<span class="sr-only">切换导航</span>
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="{{ url_for('main.index') }}">Oneshot</a>
+			<a class="navbar-brand" href="{{ url_for('main.index') }}">OneShot</a>
+
+			<ul class="nav navbar-nav navbar-right">
+				{% if current_user.is_authenticated %}
+				<li ><a href="{{ url_for('auth.signout') }}">Sign Out</a></li>
+				{% else %}
+				<li ><a href="{{ url_for('auth.signin') }}">Sign In</a></li>
+				{% endif %}
+			</ul>
+
 		</div>
 		<div class="navbar-collapase collapse">
 			<ul class="nav navbar-nav navbar-right">
 				{% if current_user.is_authenticated %}
-				<li><a href="{{ url_for('auth.signout') }}">Sign Out</a></li>
+				<li ><a href="{{ url_for('auth.signout') }}">Sign Out</a></li>
 				{% else %}
-				<li><a href="{{ url_for('auth.signin') }}">Sign In</a></li>
+				<li ><a href="{{ url_for('auth.signin') }}">Sign In</a></li>
 				{% endif %}
 			</ul>
 		</div>

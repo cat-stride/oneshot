@@ -22,11 +22,12 @@ class DevelopmentConfig(Config):
 	DEBUG = True
 	# SQLALCHEMY_DATABASE_URI = 'mysql://root:123456789@localhost/' + os.path.join(basedir, 'develop')
 	# SQLALCHEMY_DATABASE_URI = 'mysql://test:test@localhost/oneshot'
-	SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://Shippo:fighting2017@localhost/Shippo'
+	SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:123456789@localhost/oneshot'
+	# SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://Shippo:fighting2017@localhost/Shippo'
 
 class ProductionConfig(Config):
 	# SQLALCHEMY_DATABASE_URI = 'mysql://test:test@localhost/oneshot'
-	SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://Shippo:fighting2017@localhost/Shippo'
+	SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:123456789@localhost/oneshot'
 	
 config = {
 	'development': DevelopmentConfig,

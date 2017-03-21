@@ -48,7 +48,7 @@ class User(UserMixin, db.Model):
 class Bullet(db.Model):
 	__tablename__ = 'bullets'
 	id = db.Column(db.Integer, primary_key=True)
-	type = db.Column(db.String(64), unique=True)
+	type = db.Column(db.String(64), nullable=False)#, unique=True)
 	content = db.Column(db.Text, nullable=False)
 	timestamp = db.Column(db.Integer, nullable=False, index=True, default=int(time.time()))
 	user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
