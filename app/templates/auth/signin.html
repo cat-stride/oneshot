@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Oneshot - Sign in{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <h1>Sign in</h1>
+</div>
+<div class="col-md-4">
+    {{ wtf.quick_form(form) }}
+    <br>
+    <p>New user? <a href="{{ url_for('auth.register') }}">Click here to sign up</a>.</p>
+</div>
+{% endblock %}

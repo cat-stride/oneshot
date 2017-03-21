@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Welcome to ONE SHOT{% endblock %}
+{% block title %}Welcome to Oneshot{% endblock %}
 
 {% block head %}
 	{{ super() }}
@@ -30,7 +30,7 @@
 			<div>
 				<a href=""></a>
 			</div>
-			<div class="post-body">{{ post.bid }} -> {{ post.content }}</div>
+			<div class="post-body">{{ post.id }} -> {{ post.content }}</div>
 		</li>
 		{% endfor %}
 	</ul>

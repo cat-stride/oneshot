@@ -7,7 +7,6 @@ import time
 
 # index page
 @main.route('/',methods=['GET'])
-@main.route('/index',methods=['GET'])
 def index():
 	posts = crud.read_bullet()
 	return render_template('index.html')
@@ -18,9 +17,9 @@ def get_bullets():
 	posts = crud.read_bullet()
 	return jsonify(posts)
 
-@main.route('/api/bullets/<int:bid>',methods=['GET'])
-def get_a_bullet(bid):
-	posts = crud.read_bullet(bid)
+@main.route('/api/bullets/<int:id>',methods=['GET'])
+def get_a_bullet(id):
+	posts = crud.read_bullet(id)
 	return jsonify(posts)
 
 @main.route('/api/bullets', methods=['POST'])
@@ -34,16 +33,16 @@ def create_a_bullet():
 	return jsonify(rep)
 
 
-@main.route('/api/bullets/<int:bid>', methods=['PUT'])
-def update_a_bullet(bid):
+@main.route('/api/bullets/<int:id>', methods=['PUT'])
+def update_a_bullet(id):
 	req = request.get_data().decode('utf-8')
 	body = eval(req)
-	rep = crud.update_bullet(bid,body)
+	rep = crud.update_bullet(id,body)
 	return jsonify(rep)
 
-@main.route('/api/bullets/<int:bid>', methods=['DELETE'])
-def delete_a_bullet(bid):
-	rep = crud.delete_bullet(bid)
+@main.route('/api/bullets/<int:id>', methods=['DELETE'])
+def delete_a_bullet(id):
+	rep = crud.delete_bullet(id)
 	return jsonify(rep)
 
 
