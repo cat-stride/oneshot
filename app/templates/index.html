@@ -5,33 +5,20 @@
 {% block head %}
 	{{ super() }}
 	<link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
-
-  <script src="{{url_for('static', filename='js/vue.min.js')}}"></script>
-	{{ moment.include_jquery() }}
-	{{ moment.include_moment() }}
+  	<script src="{{url_for('static', filename='js/vue.min.js')}}"></script>
+  	<script src="https://unpkg.com/moment@2.17.1"></script>
+<!--   		{{ moment.include_jquery() }}
+	{{ moment.include_moment() }} -->
 {% endblock %}
 
 {% block page_content %}
-
+{% if current_user.is_authenticated %}
 	<div id="app"></div>
-
 	<script src="{{url_for('static', filename='js/bullet.js')}}"></script>
 	<script src="{{url_for('static', filename='js/bullet-input.js')}}"></script>
 	<script src="{{url_for('static', filename='js/app.js')}}"></script>
-
-	<ul class="posts">
-		{% for post in posts %}
-		<li class="post">
-			<div class="post-thumbnail">
-				<a href=""></a>
-				<img src="">
-			</div>
-			<div class="post-date">time</div>
-			<div>
-				<a href=""></a>
-			</div>
-			<div class="post-body">{{ post.id }} -> {{ post.content }}</div>
-		</li>
-		{% endfor %}
-	</ul>
+{% else %}
+	<img src="{{url_for('static', filename='pic/index.png')}}">
+{% endif %}
 {% endblock %}
+

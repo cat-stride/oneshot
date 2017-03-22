@@ -27,22 +27,22 @@ function buildRecords() {
 
   function parseRecordSyms(records) {
     return records.map(record => {
-      record.sym = STRING_TO_SYM[record.sym_name]
-      record.id = record.bid
+      record.sym = STRING_TO_SYM[record.type]
+      // record.id = record.bid
       return record
     }).sort((a, b) => a.id > b.id)
   }
 
   function stringifyRecordSyms(records) {
     return records.map(record => {
-      record.sym_name = SYM_TO_STRING[record.sym]
-      record.bid = record.id
+      record.type = SYM_TO_STRING[record.sym]
+      // record.bid = record.id
       return record
     })
   }
 
   async function getBullets() {
-    const records = await fetch(API).then(r => r.json())
+    const records = await fetch(API,{credentials: 'include'}).then(r => r.json())
     saveLocalBullets(parseRecordSyms(records))
     const raw = localStorage.getItem(BULLET_RECORDS)
     return parseJSON(raw) || []
@@ -60,7 +60,8 @@ function buildRecords() {
   async function addBullet({ sym, content }) {
     const record = await fetch(API, {
       method: 'POST',
-      body: JSON.stringify({ sym_name: SYM_TO_STRING[sym], content: content }),
+      body: JSON.stringify({ type: SYM_TO_STRING[sym], content: content }),
+      credentials: 'include'
     }).then(r => r.json())
     const bullets = await getBullets()
     saveLocalBullets(bullets)
@@ -70,7 +71,8 @@ function buildRecords() {
   async function setBullet({ id, sym, content }) {
     const record = await fetch(`${API}/${id}`, {
       method: 'PUT',
-      body: JSON.stringify({ sym_name: SYM_TO_STRING[sym], content: content }),
+      body: JSON.stringify({ type: SYM_TO_STRING[sym], content: content }),
+      credentials: 'include'
     }).then(r => r.json())
     const bullets = await getBullets()
     saveLocalBullets(bullets)
@@ -80,6 +82,7 @@ function buildRecords() {
   async function removeBullet({ id }) {
     const record = await fetch(`${API}/${id}`, {
       method: 'DELETE',
+      credentials: 'include'
     }).then(r => r.json())
     const bullets = await getBullets()
     saveLocalBullets(bullets)

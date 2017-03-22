@@ -11,8 +11,8 @@ class Config:
 	MAIL_USE_TLS = True
 	MAIL_USERNAME = 'catstride@163.com'
 	MAIL_PASSWORD = 'oneshot321'       # 163邮箱的话这里要填授权码
-	MAIL_SUBJECT_PREFIX = '[Oneshot]'
-	MAIL_SENDER = 'Oneshot Team <catstride@163.com>'
+	MAIL_SUBJECT_PREFIX = '[OneShot]'
+	MAIL_SENDER = 'OneShot Team <catstride@163.com>'
 
 	@staticmethod
 	def init_app(app):

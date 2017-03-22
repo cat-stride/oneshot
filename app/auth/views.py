@@ -42,16 +42,19 @@ def signout():
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = User(email=form.mail.data,
-                    username=form.username.data,
-                    password=form.password.data)
+        user = User()
+
+        user.mail = form.mail.data,
+        user.username = form.username.data,
+        user.password = form.password.data
+
         db.session.add(user)
         db.session.commit()
         token = user.generate_confirmation_token()
         send_mail(user.mail, 'Confirm Your Account',
-                   'auth/email/confirm', user=user, token=token)
+                   'auth/mail/confirm', user=user, token=token)
         flash('A confirmation mail has been sent.')
-        return redirect(url_for('auth.login'))
+        return redirect(url_for('auth.signin'))
     return render_template('auth/register.html', form=form)
 
 @auth.route('/confirm/<token>')

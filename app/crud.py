@@ -2,9 +2,10 @@ import time
 from app.models import Bullet, User
 from . import db
 
+
 def create_bullet(data):
-	new_bullet = Bullet(type=data['sym_name'], content=data['content'],\
-		timestamp=int(time.time()))
+	new_bullet = Bullet(type=data['type'], content=data['content'],\
+		timestamp=int(time.time()),user_id = data['user_id'])
 	db.session.add(new_bullet)
 	db.session.commit()
 	rep = {
@@ -16,11 +17,11 @@ def create_bullet(data):
 	}
 	return rep
 
-def read_bullet(id=None):
-	if id == None:
-		bullets = Bullet.query.order_by(Bullet.timestamp.desc()).all()
+def read_bullet_by_type(user_id,type=None):
+	if type == None:
+		bullets = Bullet.query.filter_by(user_id=user_id).order_by(Bullet.timestamp.desc()).all()
 	else:
-		bullets = Bullet.query.filter_by(id=id).all()
+		bullets = Bullet.query.filter_by(user_id=user_id,type=type).all()
 	ble = {}
 	rep = []
 	for bullet in bullets:
@@ -32,9 +33,27 @@ def read_bullet(id=None):
 		rep.append(ble.copy())
 	return rep
 
-def update_bullet(id, data):
-	original_bullet = Bullet.query.get(id)
-	original_bullet.type= data['sym_name']
+def read_bullet_by_bid(user_id,bid=None):
+	if bid == None:
+		bullets = Bullet.query.filter_by(user_id=user_id).order_by(Bullet.timestamp.desc()).all()
+	else:
+		bullets = Bullet.query.filter_by(user_id=user_id,id=bid).all()
+	ble = {}
+	rep = []
+	for bullet in bullets:
+		ble['id'] = bullet.id
+		ble['sym_name'] = bullet.type
+		ble['content'] = bullet.content
+		ble['timestamp'] = bullet.timestamp
+		ble['user_id'] = bullet.user_id
+		rep.append(ble.copy())
+	return rep
+
+def update_bullet(bid, data):
+	print(bid)
+	print(data)
+	original_bullet = Bullet.query.get(bid)
+	original_bullet.type= data['type']
 	original_bullet.content = data['content']
 	original_bullet.timestamp = int(time.time())
 	db.session.add(original_bullet)
@@ -48,8 +67,8 @@ def update_bullet(id, data):
 	}
 	return rep
 
-def delete_bullet(id):
-	old_bullet = Bullet.query.get(id)
+def delete_bullet(bid):
+	old_bullet = Bullet.query.get(bid)
 	db.session.delete(old_bullet)
 	db.session.commit()
 	rep = {
