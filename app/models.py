@@ -14,6 +14,8 @@ class User(UserMixin, db.Model):
 	password_hash = db.Column(db.String(128))
 	confirmed = db.Column(db.Boolean, default=False)
 	bullets = db.relationship('Bullet', backref='user', lazy='dynamic')
+	wechat_id = db.Column(db.String(64), unique=True, index=True) # 关联微信号
+	register_source = db.Column(db.String(64)) # 用户来源
 
 	@property
 	def password(self):
@@ -52,6 +54,7 @@ class Bullet(db.Model):
 	content = db.Column(db.Text, nullable=False)
 	timestamp = db.Column(db.Integer, nullable=False, index=True, default=int(time.time()))
 	user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+	# wechat_id = db.Column(db.Integer, db.ForeignKey('users.wechat_id'))
 
 
 @login_manager.user_loader

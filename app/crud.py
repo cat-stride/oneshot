@@ -26,7 +26,7 @@ def read_bullet_by_type(user_id,type=None):
 	rep = []
 	for bullet in bullets:
 		ble['id'] = bullet.id
-		ble['sym_name'] = bullet.type
+		ble['type'] = bullet.type
 		ble['content'] = bullet.content
 		ble['timestamp'] = bullet.timestamp
 		ble['user_id'] = bullet.user_id
@@ -42,7 +42,7 @@ def read_bullet_by_bid(user_id,bid=None):
 	rep = []
 	for bullet in bullets:
 		ble['id'] = bullet.id
-		ble['sym_name'] = bullet.type
+		ble['type'] = bullet.type
 		ble['content'] = bullet.content
 		ble['timestamp'] = bullet.timestamp
 		ble['user_id'] = bullet.user_id
@@ -50,8 +50,6 @@ def read_bullet_by_bid(user_id,bid=None):
 	return rep
 
 def update_bullet(bid, data):
-	print(bid)
-	print(data)
 	original_bullet = Bullet.query.get(bid)
 	original_bullet.type= data['type']
 	original_bullet.content = data['content']
@@ -60,7 +58,7 @@ def update_bullet(bid, data):
 	db.session.commit()
 	rep = {
 		'id': original_bullet.id,
-		'sym_name': original_bullet.type,
+		'type': original_bullet.type,
 		'content': original_bullet.content,
 		'timestamp': original_bullet.timestamp,
 		'user_id': original_bullet.user_id
@@ -73,7 +71,7 @@ def delete_bullet(bid):
 	db.session.commit()
 	rep = {
 		'id': old_bullet.id,
-		'sym_name': old_bullet.type,
+		'type': old_bullet.type,
 		'content': old_bullet.content,
 		'timestamp': old_bullet.timestamp,
 		'user_id': old_bullet.user_id
