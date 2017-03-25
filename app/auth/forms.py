@@ -23,6 +23,7 @@ class RegistrationForm(FlaskForm):
     password = PasswordField('Password', validators=[Required(), EqualTo('password2', 
                                                     message='Passwords must match.')])
     password2 = PasswordField('Confirm password', validators=[Required()])
+    wechat_id = StringField('Wechat Id', validators=[Required()])
     submit = SubmitField('Sign In')
 
     def validate_email(self, field):
@@ -32,3 +33,7 @@ class RegistrationForm(FlaskForm):
     def validate_username(self, field):
         if User.query.filter_by(username=field.data).first():
             raise ValidationError('Username already taken.')
+
+    def validate_wechatid(self, field):
+        if User.query.filter_by(wechat_id=field.data).first():
+            raise ValidationError('Wechat id already taken.')

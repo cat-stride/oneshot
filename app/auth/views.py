@@ -47,7 +47,8 @@ def register():
         user.mail = form.mail.data,
         user.username = form.username.data,
         user.password = form.password.data
-
+        user.wechat_id = form.wechat_id.data
+        user.register_source = 'web'
         db.session.add(user)
         db.session.commit()
         token = user.generate_confirmation_token()
