@@ -3,10 +3,6 @@ from app.models import Bullet, User
 from . import db
 
 def register_by_wechat(wechat_id):
-	# WEB 端注册时，填写微信号？ 但微信 WEB API 无法获取微信号，只能为每个新增好友设置别名，通过唯一的别名来区别，
-	#但当用户在WEB端填写时，怎么知道程序要将他别名设置为什么？
-	# 自动注册邮箱？统一为 微信别名@oneshot.com 格式?
-	# WEB 端可用 微信别名 登陆？
 	new_user = User()
 	new_user.mail = wechat_id + "@oneshot.com"
 	new_user.username = wechat_id
@@ -119,15 +115,17 @@ def read_all_by_wechat(user_id):
 		rep.append(ble.copy())
 	return rep
 
-# def auto_push_bullet_by_wechat(user_id, btype):
-# 	bullets = Bullet.query.filter_by(user_id=user_id,type=btype).order_by(Bullet.timestamp.desc()).all()
-# 	ble = {}
-# 	rep = []
-# 	for bullet in bullets:
-# 		ble['id'] = bullet.id
-# 		ble['type'] = bullet.type
-# 		ble['content'] = bullet.content
-# 		ble['timestamp'] = bullet.timestamp
-# 		ble['user_id'] = bullet.user_id
-# 		rep.append(ble.copy())
-# 	return rep
+def auto_push_bullet_by_wechat(user_id, btype1,btype2,btype3):
+	bullets = Bullet.query.filter_by(user_id=user_id).filter\
+	((Bullet.type == btype1)|(Bullet.type == btype2)| (Bullet.type == btype3)).\
+	order_by(Bullet.timestamp.desc()).all()
+	ble = {}
+	rep = []
+	for bullet in bullets:
+		ble['id'] = bullet.id
+		ble['type'] = bullet.type
+		ble['content'] = bullet.content
+		ble['timestamp'] = bullet.timestamp
+		ble['user_id'] = bullet.user_id
+		rep.append(ble.copy())
+	return rep

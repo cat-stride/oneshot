@@ -9,9 +9,10 @@ import time
 # index page
 @main.route('/',methods=['GET'])
 def index():
-	user_id = current_user.get_id()
-	posts = crud.read_bullet_by_type(user_id=user_id,type=None)
+	# user_id = current_user.get_id()
+	# posts = crud.read_bullet_by_type(user_id=user_id,type=None)
 	return render_template('index.html')
+
 
 # request and response
 @main.route('/api/bullets',methods=['GET'])
@@ -102,6 +103,16 @@ def get_type_bullet_by_wechat():
 	print(user_id,btype)
 	rep = crud_by_wechat.read_by_type_wechat(user_id,btype)
 	return jsonify(rep)
+
+@main.route('/wechat/api/bullets/types/', methods=['GET'])
+def auto_push_bullet_by_wechat():
+	user_id = request.args.get('user_id')
+	btype1 = request.args.get('type1') # today
+	btype2 = request.args.get('type2') # delay
+	btype3 = request.args.get('type3') # future
+	rep = crud_by_wechat.auto_push_bullet_by_wechat(user_id,btype1,btype2,btype3)
+	return jsonify(rep)
+
 
 @main.route('/wechat/api/bullets/<int:bid>', methods=['DELETE'])
 def delete_bullet_by_wechat(bid):
