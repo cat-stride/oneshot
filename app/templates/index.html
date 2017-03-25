@@ -3,13 +3,13 @@
 {% block title %}Welcome to Oneshot{% endblock %}
 
 {% block page_content %}
-{% if current_user.is_authenticated %}
+<!-- {% if current_user.is_authenticated %} -->
 	<div id="app"></div>
 	<script src="{{url_for('static', filename='js/bullet.js')}}"></script>
 	<script src="{{url_for('static', filename='js/bullet-input.js')}}"></script>
 	<script src="{{url_for('static', filename='js/app.js')}}"></script>
-{% else %}
+<!-- {% else %}
 	<p>ONE SHOT</p>
-{% endif %}
+{% endif %} -->
 {% endblock %}
 

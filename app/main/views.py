@@ -11,7 +11,10 @@ import time
 def index():
 	# user_id = current_user.get_id()
 	# posts = crud.read_bullet_by_type(user_id=user_id,type=None)
-	return render_template('index.html')
+	if current_user.is_authenticated:
+		return render_template('index.html')
+	else:
+		return redirect(url_for('auth.signin'))
 
 
 # request and response
