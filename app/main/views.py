@@ -9,8 +9,6 @@ import time
 # index page
 @main.route('/',methods=['GET'])
 def index():
-	# user_id = current_user.get_id()
-	# posts = crud.read_bullet_by_type(user_id=user_id,type=None)
 	if current_user.is_authenticated:
 		return render_template('index.html')
 	else:
